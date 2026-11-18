@@ -199,14 +199,11 @@ p { margin: 0 0 1em; }
 .stage__facade img { width: 100%; height: 100%; display: block; }
 .stage__inside { position: absolute; inset: 0; will-change: clip-path; clip-path: inset(50% 50% 50% 50%); }
 .stage.is-done .stage__inside { clip-path: none; will-change: auto; }
-.slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.8s cubic-bezier(.4,0,.2,1); backface-visibility: hidden; }
+.slide { position: absolute; inset: 0; transform: translate3d(100%, 0, 0); transition: transform 1.5s cubic-bezier(.65,0,.35,1); backface-visibility: hidden; will-change: transform; }
 .slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.slide.is-on { opacity: 1; z-index: 2; }
-.slide.is-first { opacity: 1; will-change: transform; }
-.slide.kb { animation: kb 9s cubic-bezier(.25,.1,.25,1) forwards; }
-.slide.kb.alt { animation-name: kb2; }
-@keyframes kb { from { transform: scale(1.1) translate3d(1.5%, 0, 0); } to { transform: scale(1) translate3d(0, 0, 0); } }
-@keyframes kb2 { from { transform: scale(1.1) translate3d(-1.5%, 1%, 0); } to { transform: scale(1.01) translate3d(0, 0, 0); } }
+.slide.is-on { transform: translate3d(0, 0, 0); z-index: 2; }
+.slide.is-first { transform: none; transition: none; }
+.slide.is-out { transform: translate3d(-100%, 0, 0); z-index: 1; }
 .stage__shade { position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; transition: opacity 1.4s ease;
   background:
     linear-gradient(90deg, rgba(10,10,10,.88) 0%, rgba(10,10,10,.62) 42%, rgba(10,10,10,.18) 78%, rgba(10,10,10,.1) 100%),
@@ -256,7 +253,7 @@ p { margin: 0 0 1em; }
 @keyframes fadeup { to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
   .js .hero__title .line > span, .js .hero [data-fade] { transform: none; opacity: 1; }
-  .slide.kb { animation: none; }
+  .slide { transition: none; }
 }
 
 /* Photo slots */
@@ -1495,7 +1492,7 @@ setInterval(updateStatus, 60000);
     inside.style.clipPath = `inset(${Math.max(0, T)}px ${Math.max(0, W - R)}px ${Math.max(0, H - B)}px ${Math.max(0, L)}px)`;
     inside.style.opacity = String(easeIn(clamp((p - .1) / .45, 0, 1)));
     const first = slides[0];
-    first.style.transform = `scale(${1.32 - .3 * ease(clamp((p - .2) / .8, 0, 1))})`;
+    first.style.transform = `scale(${1.32 - .32 * ease(clamp((p - .2) / .8, 0, 1))})`;
     flash.style.setProperty("--fx", (L + R) / 2 / W * 100 + "%");
     flash.style.setProperty("--fy", (T + B) / 2 / H * 100 + "%");
     flash.style.opacity = String(Math.sin(Math.PI * clamp((p - .55) / .45, 0, 1)) * .9);
@@ -1504,6 +1501,7 @@ setInterval(updateStatus, 60000);
     if (done) return; done = true;
     stage.classList.add("is-done");
     inside.style.clipPath = ""; inside.style.opacity = "1";
+    slides[0].style.transform = "";
     fac.style.visibility = "hidden";
     flash.style.opacity = "0";
     hero.classList.add("is-in");
@@ -1516,10 +1514,9 @@ setInterval(updateStatus, 60000);
   function next() {
     const cur = slides[idx], n = (idx + 1) % slides.length, nx = slides[n];
     load(nx).then(() => {
-      nx.classList.remove("kb", "alt"); void nx.offsetWidth;
-      nx.classList.add("is-on", "kb"); if (n % 2) nx.classList.add("alt");
-      cur.classList.remove("is-on", "is-first");
-      setTimeout(() => { if (!cur.classList.contains("is-on")) cur.classList.remove("kb", "alt"); cur.style.transform = ""; }, 2000);
+      nx.style.transition = "none"; nx.classList.remove("is-out"); void nx.offsetWidth; nx.style.transition = "";
+      nx.classList.add("is-on");
+      cur.classList.remove("is-on", "is-first"); cur.classList.add("is-out");
       idx = n;
       load(slides[(n + 1) % slides.length]);
     });
