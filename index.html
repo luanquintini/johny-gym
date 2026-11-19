@@ -483,10 +483,20 @@ p { margin: 0 0 1em; }
 @media (max-width: 980px) { .contact__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .contact__cta { grid-column: 1 / -1; } }
 @media (max-width: 560px) { .contact__grid { grid-template-columns: 1fr; } }
 
-.footer { background: var(--black); color: rgba(255,255,255,.55); font-size: 14px; border-top: 1px solid rgba(255,255,255,.1); }
-.footer__in { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 26px; padding-bottom: 26px; }
-.footer a { color: rgba(255,255,255,.8); text-decoration: none; }
+.footer { background: var(--black); color: rgba(255,255,255,.6); font-size: 15px; border-top: 1px solid rgba(255,255,255,.1); }
+.footer a { color: rgba(255,255,255,.82); text-decoration: none; transition: color .2s; }
 .footer a:hover { color: var(--yellow); }
+.footer__top { display: grid; grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)); gap: 32px; padding-top: 56px; padding-bottom: 44px; }
+.footer__brand p { margin: 16px 0 0; max-width: 26em; }
+.footer h3 { font-family: var(--display); font-size: 20px; color: var(--yellow); margin: 0 0 14px; letter-spacing: .02em; }
+.footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.footer__bottom { border-top: 1px solid rgba(255,255,255,.1); }
+.footer__bin { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 24px; padding-top: 20px; padding-bottom: 20px; font-size: 13px; color: rgba(255,255,255,.5); }
+.footer__credit a { color: rgba(255,255,255,.75); font-weight: 600; }
+.footer__credit a strong { color: var(--yellow); font-weight: 700; }
+@media (max-width: 860px) { .footer__top { grid-template-columns: repeat(2, minmax(0, 1fr)); } .footer__brand { grid-column: 1 / -1; } }
+@media (max-width: 480px) { .footer__top { grid-template-columns: minmax(0, 1fr); padding-top: 44px; } .footer__bin { flex-direction: column; align-items: flex-start; } }
+@media (max-width: 760px) { .footer__bin { padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 96px); } }
 
 /* Floating WhatsApp */
 .wa-float {
@@ -1309,9 +1319,42 @@ a.wd:hover { outline: 3px solid var(--text); outline-offset: 1px; }
 
 
 <footer class="footer">
-  <div class="wrap footer__in">
-    <span>© <span data-year>2026</span> Johnny Gym · Academia em Blumenau</span>
-    <a href="#inicio">Voltar ao topo</a>
+  <div class="wrap footer__top">
+    <div class="footer__brand">
+      <a class="brand" href="#inicio" aria-label="Johnny Gym, voltar ao início"><span class="brand__mark"><span>Johnny Gym</span></span></a>
+      <p>Academia em Blumenau com musculação, funcional, pilates solo, jump e fit dance. Aberta de segunda a sexta, das 5h30 às 23h30.</p>
+    </div>
+    <nav aria-label="Rodapé">
+      <h3>Navegação</h3>
+      <ul>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#modalidades">Modalidades</a></li>
+        <li><a href="#estrutura">Estrutura</a></li>
+        <li><a href="#horarios">Horários</a></li>
+        <li><a href="#treino">Monte seu treino</a></li>
+      </ul>
+    </nav>
+    <div>
+      <h3>Contato</h3>
+      <ul>
+        <li><a data-wa href="https://wa.me/5547999216741" target="_blank" rel="noopener">WhatsApp (47) 99921-6741</a></li>
+        <li><a href="https://www.instagram.com/academiajohnnygym/" target="_blank" rel="noopener">@academiajohnnygym</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Endereço</h3>
+      <ul>
+        <li>R. São Paulo, 1773</li>
+        <li>Itoupava Seca, Blumenau – SC</li>
+        <li><a href="#localizacao">Como chegar</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <div class="wrap footer__bin">
+      <span>© <span data-year>2026</span> Johnny Gym. Todos os direitos reservados.</span>
+      <span class="footer__credit">Desenvolvido por <a href="https://wa.me/554792193142" target="_blank" rel="noopener"><strong>Luan Quintini</strong></a></span>
+    </div>
   </div>
 </footer>
 
